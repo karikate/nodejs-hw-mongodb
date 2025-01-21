@@ -1,12 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import pino from 'pino-http';
 import { getContactById, getContacts } from './db/services/contacts.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { ENV_VARS } from './constants/env.js';
 
-dotenv.config();
 const PORT = Number(getEnvVar(ENV_VARS.PORT)) || 3000;
 
 export const setupServer = () => {
