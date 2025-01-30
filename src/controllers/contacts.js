@@ -1,10 +1,11 @@
-import createHttpError from 'http-errors';
 import {
   deleteContactById,
   getContactById,
   getContacts,
+  patchContactById,
   postContact,
 } from '../db/services/contacts.js';
+import { notFoundHandler } from '../middlewares/notFoundHandler.js';
 
 export const getContController = async (req, res) => {
   const contacts = await getContacts();
@@ -21,7 +22,7 @@ export const getContByIdController = async (req, res, next) => {
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    throw createHttpError(404, 'Contact not found');
+    notFoundHandler();
   }
 
   res.json({
@@ -36,18 +37,24 @@ export const postContController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: 'Successfully created contact!',
+    message: 'Successfully created a contact!',
     data: contacts,
   });
 };
 
 export const patchContController = async (req, res) => {
-  const contacts = await getContacts();
+  const { contactId } = req.params;
+  const { body } = req;
+  const { contact } = await patchContactById(contactId, body);
+
+  if (!contact) {
+    notFoundHandler();
+  }
 
   res.json({
     status: 200,
-    message: 'Successfully found contacts!',
-    data: contacts,
+    message: 'Successfully patched a contact!',
+    data: contact,
   });
 };
 
@@ -56,7 +63,7 @@ export const deleteContController = async (req, res) => {
   const contact = await deleteContactById(contactId);
 
   if (!contact) {
-    throw createHttpError(404, 'Contact not found');
+    notFoundHandler();
   }
 
   res.status(204).send();
