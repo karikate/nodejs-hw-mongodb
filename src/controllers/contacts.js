@@ -5,7 +5,7 @@ import {
   patchContactById,
   postContact,
 } from '../db/services/contacts.js';
-import { notFoundHandler } from '../middlewares/notFoundHandler.js';
+import { notFoundContactHandler } from '../middlewares/notFoundContact.js';
 
 export const getContController = async (req, res) => {
   const contacts = await getContacts();
@@ -22,7 +22,7 @@ export const getContByIdController = async (req, res, next) => {
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    notFoundHandler();
+    notFoundContactHandler();
   }
 
   res.json({
@@ -48,7 +48,7 @@ export const patchContController = async (req, res) => {
   const { contact } = await patchContactById(contactId, body);
 
   if (!contact) {
-    notFoundHandler();
+    notFoundContactHandler();
   }
 
   res.json({
@@ -63,7 +63,7 @@ export const deleteContController = async (req, res) => {
   const contact = await deleteContactById(contactId);
 
   if (!contact) {
-    notFoundHandler();
+    notFoundContactHandler();
   }
 
   res.status(204).send();
