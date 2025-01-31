@@ -1,5 +1,5 @@
-import createHttpError from 'http-errors';
 import { ContactsCollection } from '../models/contact.js';
+import { notFoundContactHandler } from '../../middlewares/notFoundContact.js';
 
 export const getContacts = async () => {
   const contacts = await ContactsCollection.find();
@@ -32,7 +32,7 @@ export const patchContactById = async (contactId, payload, options = {}) => {
   const isNew = !response.lastErrorObject.updatedExisting;
 
   if (!contact) {
-    throw new createHttpError(404, 'Student not found');
+    notFoundContactHandler();
   }
 
   return {
