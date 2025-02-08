@@ -1,10 +1,42 @@
 import { ContactsCollection } from '../models/contact.js';
 import { notFoundContactHandler } from '../../middlewares/notFoundContact.js';
+import { calculatePaginationData } from '../../utils/calculatePaginationData.js';
 
-export const getContacts = async () => {
-  const contacts = await ContactsCollection.find();
+export const getContacts = async ({
+  page,
+  perPage,
+  sortOrder,
+  sortBy,
+  filter,
+}) => {
+  const limit = perPage;
+  const skip = (page - 1) * perPage;
+  const filtersQuery = ContactsCollection.find();
 
-  return contacts;
+  if (filter.contactType) {
+    filtersQuery.where('contactType').equals(filter.contactType);
+  }
+
+  if (filter.isFavourite || filter.isFavourite === false) {
+    filtersQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+  const contactsQuery = ContactsCollection.find();
+  const contactsCount = await ContactsCollection.find()
+    .merge(filtersQuery)
+    .merge(contactsQuery)
+    .countDocuments();
+
+  const contacts = await contactsQuery
+    .merge(filtersQuery)
+    .limit(limit)
+    .skip(skip)
+    .sort({ [sortBy]: sortOrder });
+  const paginData = calculatePaginationData(page, perPage, contactsCount);
+  return {
+    data: contacts,
+    ...paginData,
+  };
 };
 export const postContact = async (payload) => {
   const contact = await ContactsCollection.create(payload);
