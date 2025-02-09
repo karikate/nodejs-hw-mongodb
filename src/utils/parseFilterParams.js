@@ -11,7 +11,7 @@ const parseIsFav = (string) => {
 
 export const parseFilterParams = (filter) => {
   return {
-    contactType: parseType(filter.contactType),
+    type: parseType(filter.type),
     isFavourite: parseIsFav(filter.isFavourite),
   };
 };

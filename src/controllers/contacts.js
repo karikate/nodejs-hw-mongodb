@@ -22,10 +22,6 @@ export const getContController = async (req, res) => {
     filter,
   });
 
-  if (!contacts.data.length) {
-    notFoundContactHandler();
-  }
-
   res.json({
     status: 200,
     message: 'Successfully found contacts!',

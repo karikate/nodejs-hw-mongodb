@@ -8,7 +8,7 @@ export const CONT_BY = {
   },
   contactType: {
     WORK: 'work',
-    HOMR: 'home',
+    HOME: 'home',
     PERSONAL: 'personal',
   },
 };
