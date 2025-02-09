@@ -13,8 +13,8 @@ export const getContacts = async ({
   const skip = (page - 1) * perPage;
   const filtersQuery = ContactsCollection.find();
 
-  if (filter.contactType) {
-    filtersQuery.where('contactType').equals(filter.contactType);
+  if (filter.type) {
+    filtersQuery.where('contactType').equals(filter.type);
   }
 
   if (filter.isFavourite || filter.isFavourite === false) {
