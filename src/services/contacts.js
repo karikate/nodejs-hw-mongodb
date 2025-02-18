@@ -1,6 +1,6 @@
-import { ContactsCollection } from '../models/contact.js';
-import { notFoundContactHandler } from '../../middlewares/notFoundContact.js';
-import { calculatePaginationData } from '../../utils/calculatePaginationData.js';
+import { ContactsCollection } from '../db/models/contact.js';
+import { notFoundContactHandler } from '../middlewares/notFoundContact.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
 export const getContacts = async ({
   page,

@@ -4,7 +4,7 @@ import {
   getContacts,
   patchContactById,
   postContact,
-} from '../db/services/contacts.js';
+} from '../services/contacts.js';
 import { notFoundContactHandler } from '../middlewares/notFoundContact.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
