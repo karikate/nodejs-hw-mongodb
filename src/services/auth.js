@@ -1,9 +1,8 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
 import { UserCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/sessionTime.js';
+import { createSession } from '../utils/createSession.js';
 
 export const registerUser = async ({ name, email, password }) => {
   let user = await UserCollection.findOne({ email, password });
@@ -21,15 +20,12 @@ export const loginUser = async ({ email, password }) => {
     throw new createHttpError(401, 'Login or password is incorrect!');
   }
   await SessionsCollection.deleteOne({ userId: user._id });
-  const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
+
+  const newSession = createSession();
 
   return await SessionsCollection.create({
     userId: user._id,
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+    ...newSession,
   });
 };
 
@@ -37,18 +33,6 @@ export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({
     _id: sessionId,
   });
-};
-
-const createSession = () => {
-  const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
-
-  return {
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
-  };
 };
 
 export const refreshUsersSession = async ({ sessionId, sessionToken }) => {

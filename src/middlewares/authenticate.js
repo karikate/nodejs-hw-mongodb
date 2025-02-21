@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
-import { SessionsCollection } from '../db/models/session';
-import { UserCollection } from '../db/models/user';
+import { SessionsCollection } from '../db/models/session.js';
+import { UserCollection } from '../db/models/user.js';
 
 export const authenticateUser = async (req, res, next) => {
   const authHeader = req.get('Authorization');
@@ -38,5 +38,6 @@ export const authenticateUser = async (req, res, next) => {
   }
 
   req.user = user;
+
   next();
 };
