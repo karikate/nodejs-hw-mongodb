@@ -1,4 +1,3 @@
-import createHttpError from 'http-errors';
 import { ContactsCollection } from '../db/models/contact.js';
 import { notFoundContactHandler } from '../middlewares/notFoundContact.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
@@ -37,9 +36,6 @@ export const getContacts = async ({
     .limit(limit)
     .skip(skip)
     .sort({ [sortBy]: sortOrder });
-
-  if (!contacts || contacts.length === 0)
-    throw new createHttpError(404, 'User`s contacts not found');
 
   const paginData = calculatePaginationData(page, perPage, contactsCount);
 
