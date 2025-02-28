@@ -7,12 +7,15 @@ import { ENV_VARS } from './constants/env.js';
 import router from './routers/index.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { UPLOAD_DIR } from './constants/upload.js';
 
 const PORT = Number(getEnvVar(ENV_VARS.PORT)) || 3000;
 
 export const setupServer = () => {
   const app = express();
-  app.use(express.json());
+  app.use(
+    express.json({ type: ['application/json', 'application/vnd.api+json'] }),
+  );
   app.use(cors());
   app.use(cookieParser());
   app.use(
@@ -22,7 +25,7 @@ export const setupServer = () => {
       },
     }),
   );
-
+  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use(router);
 
   app.use('*', notFoundHandler);

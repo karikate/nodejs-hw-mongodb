@@ -50,8 +50,8 @@ export const getContByIdController = async (req, res, next) => {
 export const postContController = async (req, res) => {
   const userId = req.user._id;
   const { body } = req;
-
-  const contacts = await postContact(body, userId);
+  const photo = req.file;
+  const contacts = await postContact({ ...body, photo }, userId);
 
   res.status(201).json({
     status: 201,
@@ -64,12 +64,16 @@ export const patchContController = async (req, res) => {
   const { contactId } = req.params;
   const { body } = req;
   const userId = req.user._id;
-  const { contact } = await patchContactById(contactId, userId, body);
+  const photo = req.file;
+
+  const { contact } = await patchContactById(contactId, userId, {
+    ...body,
+    photo,
+  });
 
   if (!contact) {
     notFoundContactHandler();
   }
-
   res.json({
     status: 200,
     message: 'Successfully patched a contact!',

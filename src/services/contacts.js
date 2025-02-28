@@ -1,6 +1,7 @@
 import { ContactsCollection } from '../db/models/contact.js';
 import { notFoundContactHandler } from '../middlewares/notFoundContact.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getContacts = async ({
   page,
@@ -45,7 +46,16 @@ export const getContacts = async ({
   };
 };
 export const postContact = async (dataContact, userId) => {
-  const contact = await ContactsCollection.create({ ...dataContact, userId });
+  let photoUrl;
+  if (dataContact.photo) {
+    photoUrl = await saveFileToCloudinary(dataContact.photo);
+  }
+
+  const contact = await ContactsCollection.create({
+    ...dataContact,
+    photo: photoUrl ? photoUrl : undefined,
+    userId,
+  });
 
   return contact;
 };
@@ -65,15 +75,21 @@ export const patchContactById = async (
   payload,
   options = {},
 ) => {
+  let photoUrl;
+  if (payload.photo) {
+    photoUrl = await saveFileToCloudinary(payload.photo);
+  }
+
   const response = await ContactsCollection.findOneAndUpdate(
     { _id: contactId, userId: userId },
-    payload,
+    { ...payload, photo: photoUrl ? photoUrl : undefined },
     {
       new: true,
       includeResultMetadata: true,
       ...options,
     },
   );
+
   const contact = response.value;
   const isNew = !response.lastErrorObject.updatedExisting;
 
