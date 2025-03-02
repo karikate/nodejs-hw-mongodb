@@ -1,6 +1,6 @@
 tags:
   - Contacts
-summary: Update contant
+summary: Update contant by id
 operationId: updateContact
 description: 'Update a contact with payload'
 security:
