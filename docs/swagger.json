@@ -225,11 +225,6 @@
                     ],
                     "example": "work'"
                   },
-                  "userId": {
-                    "description": "Contact's user id",
-                    "type": "string",
-                    "example": "67b8633892a8cc3cde5c2b04"
-                  },
                   "photo": {
                     "description": "Contact's photo",
                     "type": "string",
@@ -389,11 +384,6 @@
                       "personal"
                     ],
                     "example": "work'"
-                  },
-                  "userId": {
-                    "description": "Contact's user id",
-                    "type": "string",
-                    "example": "67b8633892a8cc3cde5c2b04"
                   },
                   "photo": {
                     "description": "Contact's photo",
