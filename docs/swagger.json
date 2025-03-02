@@ -335,7 +335,7 @@
         "tags": [
           "Contacts"
         ],
-        "summary": "Update contant by id",
+        "summary": "Update contact by id",
         "operationId": "updateContact",
         "description": "Update a contact with payload",
         "security": [
