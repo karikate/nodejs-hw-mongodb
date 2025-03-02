@@ -91,5 +91,4 @@ responses:
                   type: boolean
                   example: true
   '401':
-    # $ref: '../../../components/responses/401.yaml'
     $ref: '../../components/responses/401.yaml'
